@@ -27,6 +27,10 @@ class Todolist extends Component {
     this.setState({ open: true });
   };
 
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     const { classes } = this.props;
     const { open } = this.state;
@@ -36,7 +40,7 @@ class Todolist extends Component {
         <div onClick={this.handleOpen}>
           <Regbutton />
         </div>
-        {open && <Reglist />}
+        {open && <Reglist handleClose={this.handleClose} />}
       </main>
     );
   }

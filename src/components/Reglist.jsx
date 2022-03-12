@@ -6,9 +6,11 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import Button from '@mui/material/Button';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Styles = {
   modal: {
+    position: 'relative',
     height: '500px',
     width: '500px',
     display: 'flex',
@@ -18,29 +20,39 @@ const Styles = {
     border: 'solid 1px lightgrey',
     borderRadius: '10px',
   },
+  cancel: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    color: '#1876D1',
+    cursor: 'pointer',
+  },
 };
 class Reglist extends Component {
   constructor() {
     super();
     this.state = {
-      value: new Date(),
+      date: new Date(),
     };
   }
   handleChange = newValue => {
-    this.setState(newValue);
+    this.setState({ date: newValue });
   };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
+    const { date } = this.state;
+    const { handleClose } = this.props;
     return (
       <div className={classes.modal}>
+        <HighlightOffIcon className={classes.cancel} onClick={handleClose} />
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DesktopDatePicker
-            label="Date desktop"
+            label="날짜 선택"
+            minDate={new Date()}
             inputFormat="MM/dd/yyyy"
-            value={value}
-            onChange={() => this.handleChange}
+            value={date}
+            onChange={this.handleChange}
             renderInput={params => <TextField {...params} />}
           />
         </LocalizationProvider>
