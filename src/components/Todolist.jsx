@@ -47,7 +47,7 @@ class Todolist extends Component {
     this.setState({
       schedules: [
         ...this.state.schedules,
-        this.state.scheduleInput + this.state.dateInput,
+        this.state.dateInput + this.state.scheduleInput,
       ],
       scheduleInput: '',
     });
