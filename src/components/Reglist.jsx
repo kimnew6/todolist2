@@ -83,7 +83,7 @@ class Reglist extends Component {
               minDate={new Date()}
               inputFormat="MM/dd/yyyy"
               value={dateInput}
-              onChange={this.handleDateChange}
+              onChange={handleDateChange}
               renderInput={params => <TextField {...params} />}
             />
           </LocalizationProvider>
