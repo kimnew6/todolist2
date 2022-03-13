@@ -20,6 +20,9 @@ class Todolist extends Component {
     super();
     this.state = {
       open: false,
+      schedules: [],
+      scheduleInput: '',
+      dateInput: new Date(),
     };
   }
 
@@ -31,16 +34,58 @@ class Todolist extends Component {
     this.setState({ open: false });
   };
 
+  // handleDateChange = newValue => {
+  //   this.setState({ dateInput: newValue });
+  // };
+
+  handleScheduleChange = e => {
+    this.setState({ scheduleInput: e.target.value });
+  };
+
+  addSchedule = e => {
+    e.preventDefault();
+    this.setState({
+      schedules: [...this.state.schedules, this.state.scheduleInput],
+      scheduleInput: '',
+    });
+    this.handleClose();
+  };
+
   render() {
     const { classes } = this.props;
-    const { open } = this.state;
+    const { open, schedules, scheduleInput, dateInput } = this.state;
     return (
       <main className={classes.container}>
-        <div>Todolist</div>
-        <div onClick={this.handleOpen}>
-          <Regbutton />
-        </div>
-        {open && <Reglist handleClose={this.handleClose} />}
+        {schedules.length > 0 ? (
+          <ul>
+            {schedules.map((scheduleInput, idx) => {
+              return (
+                <li key={idx}>
+                  {/* <span>{dateInput}</span> */}
+                  <span>{scheduleInput}</span>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <>
+            <div>Todolist</div>
+            <div onClick={this.handleOpen}>
+              <Regbutton />
+            </div>
+          </>
+        )}
+        {open && (
+          <Reglist
+            handleClose={this.handleClose}
+            handleDateChange={this.handleDateChange}
+            handleScheduleChange={this.handleScheduleChange}
+            addSchedule={this.addSchedule}
+            schedules={schedules}
+            scheduleInput={scheduleInput}
+            dateInput={dateInput}
+          />
+        )}
       </main>
     );
   }

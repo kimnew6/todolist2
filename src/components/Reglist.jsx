@@ -9,8 +9,19 @@ import Button from '@mui/material/Button';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Styles = {
+  modalBackground: {
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'rgba(0,0,0,0.6)',
+  },
   modal: {
-    position: 'relative',
+    position: 'absolute',
     height: '500px',
     width: '500px',
     display: 'flex',
@@ -19,6 +30,7 @@ const Styles = {
     flexDirection: 'column',
     border: 'solid 1px lightgrey',
     borderRadius: '10px',
+    background: 'white',
   },
   cancel: {
     position: 'absolute',
@@ -31,46 +43,74 @@ const Styles = {
 class Reglist extends Component {
   constructor() {
     super();
-    this.state = {
-      date: new Date(),
-    };
+    // this.props = { schedules: [], scheduleInput: '', dateInput: new Date() };
   }
-  handleChange = newValue => {
-    this.setState({ date: newValue });
+
+  handleDateChange = newValue => {
+    this.setState({ dateInput: newValue });
   };
+
+  // handleScheduleChange = e => {
+  //   this.setState({ scheduleInput: e.target.value });
+  // };
+
+  // addSchedule = e => {
+  //   e.preventDefault();
+  //   this.setState({
+  //     schedules: [...this.props.scheduleInput, this.props.scheduleInput],
+  //     scheduleInput: '',
+  //   });
+  // };
 
   render() {
     const { classes } = this.props;
-    const { date } = this.state;
-    const { handleClose } = this.props;
+    const {
+      handleClose,
+      // schedules,
+      scheduleInput,
+      dateInput,
+      // handleDateChange,
+      handleScheduleChange,
+      addSchedule,
+    } = this.props;
     return (
-      <div className={classes.modal}>
-        <HighlightOffIcon className={classes.cancel} onClick={handleClose} />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DesktopDatePicker
-            label="날짜 선택"
-            minDate={new Date()}
-            inputFormat="MM/dd/yyyy"
-            value={date}
-            onChange={this.handleChange}
-            renderInput={params => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        <Box
-          component="form"
-          sx={{
-            '& > :not(style)': { m: 1, width: '25ch' },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="standard-basic"
-            label="일정을 입력하세요"
-            variant="standard"
-          />
-        </Box>
-        <Button variant="contained">등록하기</Button>
+      <div className={classes.modalBackground}>
+        <div className={classes.modal}>
+          <HighlightOffIcon className={classes.cancel} onClick={handleClose} />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="날짜 선택"
+              minDate={new Date()}
+              inputFormat="MM/dd/yyyy"
+              value={dateInput}
+              onChange={this.handleDateChange}
+              renderInput={params => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-basic"
+              label="일정을 입력하세요"
+              variant="standard"
+              onChange={handleScheduleChange}
+              value={scheduleInput}
+            />
+          </Box>
+          <Button
+            onClick={addSchedule}
+            style={{ marginTop: '30px' }}
+            variant="contained"
+          >
+            등록하기
+          </Button>
+        </div>
       </div>
     );
   }
