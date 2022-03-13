@@ -46,9 +46,9 @@ class Reglist extends Component {
     // this.props = { schedules: [], scheduleInput: '', dateInput: new Date() };
   }
 
-  handleDateChange = newValue => {
-    this.setState({ dateInput: newValue });
-  };
+  // handleDateChange = newValue => {
+  //   this.setState({ dateInput: newValue });
+  // };
 
   // handleScheduleChange = e => {
   //   this.setState({ scheduleInput: e.target.value });
@@ -69,7 +69,7 @@ class Reglist extends Component {
       // schedules,
       scheduleInput,
       dateInput,
-      // handleDateChange,
+      handleDateChange,
       handleScheduleChange,
       addSchedule,
     } = this.props;

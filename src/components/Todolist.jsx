@@ -34,9 +34,9 @@ class Todolist extends Component {
     this.setState({ open: false });
   };
 
-  // handleDateChange = newValue => {
-  //   this.setState({ dateInput: newValue });
-  // };
+  handleDateChange = newValue => {
+    this.setState({ dateInput: newValue });
+  };
 
   handleScheduleChange = e => {
     this.setState({ scheduleInput: e.target.value });
@@ -45,7 +45,10 @@ class Todolist extends Component {
   addSchedule = e => {
     e.preventDefault();
     this.setState({
-      schedules: [...this.state.schedules, this.state.scheduleInput],
+      schedules: [
+        ...this.state.schedules,
+        this.state.scheduleInput + this.state.dateInput,
+      ],
       scheduleInput: '',
     });
     this.handleClose();
@@ -58,10 +61,10 @@ class Todolist extends Component {
       <main className={classes.container}>
         {schedules.length > 0 ? (
           <ul>
-            {schedules.map((scheduleInput, idx) => {
+            {schedules.map((scheduleInput, dateInput, idx) => {
               return (
                 <li key={idx}>
-                  {/* <span>{dateInput}</span> */}
+                  <span>{dateInput}</span>
                   <span>{scheduleInput}</span>
                 </li>
               );
