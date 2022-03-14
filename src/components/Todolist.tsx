@@ -31,18 +31,22 @@ const Styles = {
   add: { position: 'fixed!important', right: 20, bottom: 20 },
 };
 
-class Todolist extends Component {
-  constructor() {
-    super();
-    this.state = {
-      open: false,
-      schedules: [],
-      scheduleInput: '',
-      dateInput: format(new Date(), 'yyyy/MM/dd'),
-
-      selected: [],
-    };
-  }
+interface State {
+  open: boolean;
+  schedules: Array<string>;
+  scheduleInput: string;
+  dateInput: any;
+  selected: Array<number>;
+  classes?: any;
+}
+class Todolist extends Component<State> {
+  state: State = {
+    open: false,
+    schedules: [],
+    scheduleInput: '',
+    dateInput: format(new Date(), 'yyyy/MM/dd'),
+    selected: [],
+  };
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -52,15 +56,15 @@ class Todolist extends Component {
     this.setState({ open: false });
   };
 
-  handleDateChange = newValue => {
+  handleDateChange = (newValue: any) => {
     this.setState({ dateInput: format(newValue, 'yyyy/MM/dd') });
   };
 
-  handleScheduleChange = e => {
+  handleScheduleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ scheduleInput: e.target.value });
   };
 
-  addSchedule = e => {
+  addSchedule = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     this.setState({
       schedules: [...this.state.schedules, this.state.scheduleInput],
@@ -69,7 +73,7 @@ class Todolist extends Component {
     this.handleClose();
   };
 
-  handleSelectAllClick = e => {
+  handleSelectAllClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       this.setState({
         selected: [...Array(this.state.schedules.length).keys()],
@@ -78,10 +82,10 @@ class Todolist extends Component {
     }
     this.setState({ selected: [] });
   };
-  handleClick = (e, i) => {
+  handleClick = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(i);
-    let newSelected = [];
+    let newSelected: Array<number> = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, i);
@@ -104,7 +108,6 @@ class Todolist extends Component {
     this.setState({ schedules: newSchedules });
     this.setState({ selected: [] });
   };
-
   render() {
     const { classes } = this.props;
     const { open, schedules, scheduleInput, dateInput, selected } = this.state;
@@ -115,6 +118,7 @@ class Todolist extends Component {
             <Button
               onClick={this.handleDelete}
               variant="outlined"
+              disabled={selected.length === 0}
               startIcon={<DeleteIcon />}
             >
               Delete
@@ -158,7 +162,6 @@ class Todolist extends Component {
             schedules={schedules}
             scheduleInput={scheduleInput}
             dateInput={dateInput}
-            pressEnter={this.pressEnter}
           />
         )}
         <Fab
