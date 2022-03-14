@@ -45,7 +45,6 @@ class Reglist extends Component {
     super();
     // this.props = { schedules: [], scheduleInput: '', dateInput: new Date() };
   }
-
   // handleDateChange = newValue => {
   //   this.setState({ dateInput: newValue });
   // };
@@ -66,7 +65,6 @@ class Reglist extends Component {
     const { classes } = this.props;
     const {
       handleClose,
-      // schedules,
       scheduleInput,
       dateInput,
       handleDateChange,
@@ -83,7 +81,7 @@ class Reglist extends Component {
               minDate={new Date()}
               inputFormat="MM/dd/yyyy"
               value={dateInput}
-              onChange={handleDateChange}
+              onChange={newValue => handleDateChange(newValue)}
               renderInput={params => <TextField {...params} />}
             />
           </LocalizationProvider>
