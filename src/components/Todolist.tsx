@@ -19,7 +19,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 import { withStyles } from '@mui/styles';
 
-const Styles = {
+const Styles: any = {
   container: {
     height: '100vh',
     position: 'relative',

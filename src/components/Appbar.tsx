@@ -4,14 +4,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { withStyles } from '@mui/styles';
 
-const Styles = {
+const Styles: any = {
   Appbar: {
     position: 'fixed',
     top: 0,
   },
 };
 
-class Appbar extends Component {
+interface State {
+  classes?: any;
+}
+class Appbar extends Component<State> {
   render() {
     const { classes } = this.props;
     return (

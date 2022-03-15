@@ -8,7 +8,7 @@ import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import Button from '@mui/material/Button';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-const Styles = {
+const Styles: any = {
   modalBackground: {
     position: 'fixed',
     top: 0,
@@ -40,11 +40,20 @@ const Styles = {
     cursor: 'pointer',
   },
 };
-class Reglist extends Component {
-  constructor() {
-    super();
-    // this.props = { schedules: [], scheduleInput: '', dateInput: new Date() };
-  }
+
+interface State {
+  classes?: any;
+  handleClose: () => void;
+  scheduleInput: string;
+  schedules: Array<string>;
+  dateInput: any;
+  handleDateChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleScheduleChange: React.ChangeEventHandler<HTMLInputElement>;
+  addSchedule: any;
+}
+class Reglist extends Component<State> {
+  // this.props = { schedules: [], scheduleInput: '', dateInput: new Date() };
+
   // handleDateChange = newValue => {
   //   this.setState({ dateInput: newValue });
   // };

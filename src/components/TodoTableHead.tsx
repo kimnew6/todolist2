@@ -4,7 +4,12 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-export default class TodoTableHead extends Component {
+interface State {
+  schedules: Array<string>;
+  selected: Array<number>;
+  handleSelectAllClick: React.ChangeEventHandler<HTMLInputElement>;
+}
+export default class TodoTableHead extends Component<State> {
   render() {
     const { handleSelectAllClick, schedules, selected } = this.props;
     return (
