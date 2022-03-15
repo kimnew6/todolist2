@@ -17,29 +17,26 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-import { withStyles } from '@mui/styles';
-
-const Styles: any = {
-  container: {
-    height: '100vh',
-    position: 'relative',
-    top: '100px',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
-  add: { position: 'fixed!important', right: 20, bottom: 20 },
-};
-
 interface State {
   open: boolean;
   schedules: Array<string>;
   scheduleInput: string;
   dateInput: any;
   selected: Array<number>;
-  classes?: any;
 }
-class Todolist extends Component<State> {
+
+type Props = {
+  classes?: any;
+  handleOpen: () => void;
+  handleClose: () => void;
+  handleDateChange: () => void;
+  handleScheduleChange: () => void;
+  addSchedule: () => void;
+  handleSelectAllClick: () => void;
+  handleClick: () => void;
+  handleDelete: () => void;
+};
+class Todolist extends Component<{}, State, Props> {
   state: State = {
     open: false,
     schedules: [],
@@ -108,11 +105,20 @@ class Todolist extends Component<State> {
     this.setState({ schedules: newSchedules });
     this.setState({ selected: [] });
   };
+
   render() {
-    const { classes } = this.props;
     const { open, schedules, scheduleInput, dateInput, selected } = this.state;
     return (
-      <main className={classes.container}>
+      <main
+        style={{
+          height: '100vh',
+          position: 'relative',
+          top: '100px',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
         {schedules.length > 0 ? (
           <TableContainer>
             <Button
@@ -165,7 +171,7 @@ class Todolist extends Component<State> {
           />
         )}
         <Fab
-          className={classes.add}
+          style={{ position: 'fixed', right: 20, bottom: 20 }}
           onClick={this.handleOpen}
           color="primary"
           aria-label="add"
@@ -177,4 +183,4 @@ class Todolist extends Component<State> {
   }
 }
 
-export default withStyles(Styles)(Todolist);
+export default Todolist;

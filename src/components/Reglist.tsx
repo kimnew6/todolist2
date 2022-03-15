@@ -41,7 +41,7 @@ const Styles: any = {
   },
 };
 
-interface State {
+interface Props {
   classes?: any;
   handleClose: () => void;
   scheduleInput: string;
@@ -51,25 +51,7 @@ interface State {
   handleScheduleChange: React.ChangeEventHandler<HTMLInputElement>;
   addSchedule: any;
 }
-class Reglist extends Component<State> {
-  // this.props = { schedules: [], scheduleInput: '', dateInput: new Date() };
-
-  // handleDateChange = newValue => {
-  //   this.setState({ dateInput: newValue });
-  // };
-
-  // handleScheduleChange = e => {
-  //   this.setState({ scheduleInput: e.target.value });
-  // };
-
-  // addSchedule = e => {
-  //   e.preventDefault();
-  //   this.setState({
-  //     schedules: [...this.props.scheduleInput, this.props.scheduleInput],
-  //     scheduleInput: '',
-  //   });
-  // };
-
+class Reglist extends Component<Props> {
   render() {
     const { classes } = this.props;
     const {
