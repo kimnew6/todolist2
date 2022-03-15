@@ -17,15 +17,17 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
+import { connect } from 'react-redux';
+
 interface State {
   open: boolean;
   schedules: Array<string>;
   scheduleInput: string;
-  dateInput: any;
+  dateInput: string;
   selected: Array<number>;
 }
 
-type Props = {
+interface Props {
   classes?: any;
   handleOpen: () => void;
   handleClose: () => void;
@@ -35,7 +37,7 @@ type Props = {
   handleSelectAllClick: () => void;
   handleClick: () => void;
   handleDelete: () => void;
-};
+}
 class Todolist extends Component<{}, State, Props> {
   state: State = {
     open: false,
@@ -183,4 +185,4 @@ class Todolist extends Component<{}, State, Props> {
   }
 }
 
-export default Todolist;
+export default connect()(Todolist);
