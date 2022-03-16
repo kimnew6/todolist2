@@ -17,7 +17,9 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
+import { actionCreators } from '../modules/todo/store';
 import { connect } from 'react-redux';
+import { addToDo, deleteToDo } from '../modules/todo/actions';
 
 interface State {
   open: boolean;
@@ -46,6 +48,7 @@ class Todolist extends Component<{}, State, Props> {
     dateInput: format(new Date(), 'yyyy/MM/dd'),
     selected: [],
   };
+  props: any = { addToDo, deleteToDo };
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -64,11 +67,14 @@ class Todolist extends Component<{}, State, Props> {
   };
 
   addSchedule = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { schedules, scheduleInput } = this.state;
     e.preventDefault();
-    this.setState({
-      schedules: [...this.state.schedules, this.state.scheduleInput],
-      scheduleInput: '',
-    });
+    addToDo(scheduleInput);
+    console.log(this.props.toDos);
+    // this.setState({
+    //   schedules: [...schedules, scheduleInput],
+    //   scheduleInput: '',
+    // });
     this.handleClose();
   };
 
@@ -107,7 +113,6 @@ class Todolist extends Component<{}, State, Props> {
     this.setState({ schedules: newSchedules });
     this.setState({ selected: [] });
   };
-
   render() {
     const { open, schedules, scheduleInput, dateInput, selected } = this.state;
     return (
@@ -185,4 +190,18 @@ class Todolist extends Component<{}, State, Props> {
   }
 }
 
-export default connect()(Todolist);
+function mapStateToProps(state: string) {
+  return {
+    toDos: state,
+  };
+}
+
+function mapDispatchToProps(dispatch: any, ownProps: any) {
+  return {
+    addToDo: (scheduleInput: string) =>
+      dispatch(actionCreators.addToDo(scheduleInput)),
+    deleteToDo: () => dispatch(actionCreators.deleteToDo(ownProps.id)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todolist);

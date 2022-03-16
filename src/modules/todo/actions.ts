@@ -1,5 +1,8 @@
 import { OPEN_MODAL, ADD_TODO, DELETE_TODO } from './constants';
 
 export const openModal = () => ({ type: OPEN_MODAL });
-export const addTodo = () => ({ type: ADD_TODO });
-export const deleteTodo = () => ({ type: DELETE_TODO });
+export const addToDo = (text: string) => ({
+  type: ADD_TODO,
+  text,
+});
+export const deleteToDo = (id: number) => ({ type: DELETE_TODO, id });
