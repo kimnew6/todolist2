@@ -19,6 +19,7 @@ export const todoReducer = (
   state = initialState,
   action: { type: string; text: string; id: number }
 ) => {
+  console.log(action);
   switch (action.type) {
     case OPEN_MODAL:
       return { ...state, openRedux: true };

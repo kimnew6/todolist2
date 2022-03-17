@@ -17,7 +17,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-import { connect } from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
 import {
   RootState,
   selectOpenModal,
@@ -25,10 +25,13 @@ import {
   addToDo,
   deleteToDo,
 } from '../modules';
-import { store } from '../store';
 
 interface ReduxProps {
   openRedux: boolean;
+}
+
+interface DispatchToProps {
+  openModal: () => void;
 }
 interface State {
   open: boolean;
@@ -48,7 +51,7 @@ interface props {
   handleClick: () => void;
   handleDelete: () => void;
 }
-type Props = ReduxProps & props;
+type Props = ReduxProps & props & DispatchToProps;
 class Todolist extends Component<{}, State, Props> {
   state: State = {
     open: false,
@@ -60,7 +63,8 @@ class Todolist extends Component<{}, State, Props> {
 
   handleOpen = () => {
     // this.setState({ open: true });
-    openModal();
+    this.props.openModal();
+    console.log(this.props);
   };
 
   handleClose = () => {
@@ -204,11 +208,14 @@ const mapStateToProps = (state: RootState): ReduxProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+const mapDispatchToProps: MapDispatchToProps<
+  DispatchToProps,
+  {}
+> = dispatch => {
   return {
     openModal: () => dispatch(openModal()),
-    addToDo: (scheduleInput: string) => dispatch(addToDo(scheduleInput)),
-    deleteToDo: () => dispatch(deleteToDo(ownProps.id)),
+    // addToDo: (scheduleInput: string) => dispatch(addToDo(scheduleInput)),
+    // deleteToDo: () => dispatch(deleteToDo(ownProps.id)),
   };
 };
 
