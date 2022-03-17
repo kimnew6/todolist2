@@ -1,14 +1,14 @@
 import { OPEN_MODAL, ADD_TODO, DELETE_TODO } from './constants';
 import { format } from 'date-fns';
 
-export interface State {
+export interface todoState {
   openRedux: boolean;
   // schedulesRedux: Array<string>;
   // scheduleInputRedux: string;
   // dateInputRedux: string;
 }
 
-export const initialState: State = {
+export const initialState: todoState = {
   openRedux: false,
   // schedulesRedux: [],
   // scheduleInputRedux: '',
@@ -19,7 +19,7 @@ export const todoReducer = (
   state = initialState,
   action: { type: string; text: string; id: number }
 ) => {
-  console.log(action);
+  console.log(state);
   switch (action.type) {
     case OPEN_MODAL:
       return { ...state, openRedux: true };

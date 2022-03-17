@@ -31,7 +31,7 @@ interface ReduxProps {
 }
 
 interface DispatchToProps {
-  openModal: () => void;
+  openModal(): typeof openModal;
 }
 interface State {
   open: boolean;
@@ -41,18 +41,19 @@ interface State {
   selected: Array<number>;
 }
 
-interface props {
-  handleOpen: () => void;
-  handleClose: () => void;
-  handleDateChange: () => void;
-  handleScheduleChange: () => void;
-  addSchedule: () => void;
-  handleSelectAllClick: () => void;
-  handleClick: () => void;
-  handleDelete: () => void;
-}
-type Props = ReduxProps & props & DispatchToProps;
-class Todolist extends Component<{}, State, Props> {
+// interface props {
+//   handleOpen: () => void;
+//   handleClose: () => void;
+//   handleDateChange: () => void;
+//   handleScheduleChange: () => void;
+//   addSchedule: () => void;
+//   handleSelectAllClick: () => void;
+//   handleClick: () => void;
+//   handleDelete: () => void;
+// }
+
+type Props = ReduxProps & DispatchToProps;
+class TodolistComponent extends Component<Props, State> {
   state: State = {
     open: false,
     schedules: [],
@@ -127,6 +128,7 @@ class Todolist extends Component<{}, State, Props> {
   };
   render() {
     const { open, schedules, scheduleInput, dateInput, selected } = this.state;
+    const { openRedux } = this.props;
     return (
       <main
         style={{
@@ -178,7 +180,7 @@ class Todolist extends Component<{}, State, Props> {
             </div>
           </>
         )}
-        {open && (
+        {openRedux && (
           <Reglist
             handleClose={this.handleClose}
             handleDateChange={this.handleDateChange}
@@ -219,4 +221,7 @@ const mapDispatchToProps: MapDispatchToProps<
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Todolist);
+export const Todolist = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodolistComponent);
