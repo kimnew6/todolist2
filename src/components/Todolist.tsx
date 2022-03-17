@@ -17,10 +17,19 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-import { actionCreators } from '../modules/todo/store';
 import { connect } from 'react-redux';
-import { addToDo, deleteToDo } from '../modules/todo/actions';
+import {
+  RootState,
+  selectOpenModal,
+  openModal,
+  addToDo,
+  deleteToDo,
+} from '../modules';
+import { store } from '../store';
 
+interface ReduxProps {
+  openRedux: boolean;
+}
 interface State {
   open: boolean;
   schedules: Array<string>;
@@ -29,8 +38,7 @@ interface State {
   selected: Array<number>;
 }
 
-interface Props {
-  classes?: any;
+interface props {
   handleOpen: () => void;
   handleClose: () => void;
   handleDateChange: () => void;
@@ -40,6 +48,7 @@ interface Props {
   handleClick: () => void;
   handleDelete: () => void;
 }
+type Props = ReduxProps & props;
 class Todolist extends Component<{}, State, Props> {
   state: State = {
     open: false,
@@ -48,10 +57,10 @@ class Todolist extends Component<{}, State, Props> {
     dateInput: format(new Date(), 'yyyy/MM/dd'),
     selected: [],
   };
-  props: any = { addToDo, deleteToDo };
 
   handleOpen = () => {
-    this.setState({ open: true });
+    // this.setState({ open: true });
+    openModal();
   };
 
   handleClose = () => {
@@ -70,7 +79,6 @@ class Todolist extends Component<{}, State, Props> {
     const { schedules, scheduleInput } = this.state;
     e.preventDefault();
     addToDo(scheduleInput);
-    console.log(this.props.toDos);
     // this.setState({
     //   schedules: [...schedules, scheduleInput],
     //   scheduleInput: '',
@@ -190,18 +198,18 @@ class Todolist extends Component<{}, State, Props> {
   }
 }
 
-function mapStateToProps(state: string) {
+const mapStateToProps = (state: RootState): ReduxProps => {
   return {
-    toDos: state,
+    openRedux: selectOpenModal(state),
   };
-}
+};
 
-function mapDispatchToProps(dispatch: any, ownProps: any) {
+const mapDispatchToProps = (dispatch: any, ownProps: any) => {
   return {
-    addToDo: (scheduleInput: string) =>
-      dispatch(actionCreators.addToDo(scheduleInput)),
-    deleteToDo: () => dispatch(actionCreators.deleteToDo(ownProps.id)),
+    openModal: () => dispatch(openModal()),
+    addToDo: (scheduleInput: string) => dispatch(addToDo(scheduleInput)),
+    deleteToDo: () => dispatch(deleteToDo(ownProps.id)),
   };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todolist);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import AppBar from './components/Appbar';
 import Todolist from './components/Todolist';

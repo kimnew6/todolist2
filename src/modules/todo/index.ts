@@ -1,6 +1,3 @@
-import { combineReducers } from 'redux';
-import { todoReducer } from './reducer';
-
-const rootReducer = combineReducers({ todoReducer });
-
-export default rootReducer;
+export * from './actions';
+export * from './reducer';
+export * from './selectors';
