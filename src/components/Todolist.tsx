@@ -17,7 +17,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-import { connect, MapDispatchToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import {
   RootState,
@@ -36,27 +36,11 @@ export interface ReduxProps {
   schedulesRedux: Array<string>;
 }
 
-// export interface DispatchToProps {
-//   openModal(): typeof openModal;
-//   closeModal(): typeof closeModal;
-//   addToDo(): typeof addToDo;
-// }
 interface State {
   scheduleInput: string;
   dateInput: string;
   selected: Array<number>;
 }
-
-// interface props {
-//   handleOpen: () => void;
-//   handleClose: () => void;
-//   handleDateChange: () => void;
-//   handleScheduleChange: () => void;
-//   addSchedule: () => void;
-//   handleSelectAllClick: () => void;
-//   handleClick: () => void;
-//   handleDelete: () => void;
-// }
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -93,10 +77,6 @@ class TodolistComponent extends Component<Props, State> {
     addToDo(scheduleInput);
     addDate(dateInput);
     this.setState({ scheduleInput: '' });
-    // this.setState({
-    //   schedules: [...schedules, scheduleInput],
-    //   scheduleInput: '',
-    // });
     this.handleClose();
   };
 
@@ -136,7 +116,6 @@ class TodolistComponent extends Component<Props, State> {
       (e, i) => selected.indexOf(i) === -1
     );
     deleteToDo(newSchedules);
-    // this.setState({ schedules: newSchedules });
     this.setState({ selected: [] });
   };
   render() {
