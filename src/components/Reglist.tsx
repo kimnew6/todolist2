@@ -45,7 +45,6 @@ interface Props {
   classes?: any;
   handleClose: () => void;
   scheduleInput: string;
-  schedules: Array<string>;
   dateInput: any;
   handleDateChange: React.ChangeEventHandler<HTMLInputElement>;
   handleScheduleChange: React.ChangeEventHandler<HTMLInputElement>;

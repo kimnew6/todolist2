@@ -1,32 +1,49 @@
-import { OPEN_MODAL, ADD_TODO, DELETE_TODO } from './constants';
+import {
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  ADD_DATE,
+  ADD_TODO,
+  DELETE_TODO,
+} from './constants';
 import { format } from 'date-fns';
 
 export interface todoState {
   openRedux: boolean;
-  // schedulesRedux: Array<string>;
-  // scheduleInputRedux: string;
-  // dateInputRedux: string;
+  schedulesRedux: Array<string>;
+  dateInputRedux: string;
 }
 
 export const initialState: todoState = {
   openRedux: false,
-  // schedulesRedux: [],
-  // scheduleInputRedux: '',
-  // dateInputRedux: format(new Date(), 'yyyy/MM/dd'),
+  schedulesRedux: [],
+  dateInputRedux: '',
 };
 
 export const todoReducer = (
   state = initialState,
-  action: { type: string; text: string; id: number }
+  action: {
+    type: any;
+    text: string;
+    id: number;
+    date: string;
+    newSchedules: string;
+  }
 ) => {
   console.log(state);
   switch (action.type) {
     case OPEN_MODAL:
       return { ...state, openRedux: true };
-    // case ADD_TODO:
-    //   return [{ text: action.text, id: Date.now(), ...state }];
-    // case DELETE_TODO:
-    //   return state.schedulesRedux.filter((toDo: any) => toDo.id !== action.id);
+    case CLOSE_MODAL:
+      return { ...state, openRedux: false };
+    case ADD_TODO:
+      return {
+        ...state,
+        schedulesRedux: [...state.schedulesRedux, action.text],
+      };
+    case ADD_DATE:
+      return { ...state, dateInputRedux: action.date };
+    case DELETE_TODO:
+      return { ...state, schedulesRedux: action.newSchedules };
     default:
       return state;
   }

@@ -18,24 +18,30 @@ import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
 import { connect, MapDispatchToProps } from 'react-redux';
+import { Dispatch } from 'redux';
 import {
   RootState,
   selectOpenModal,
+  selectSchedules,
+  selectDateInput,
   openModal,
+  closeModal,
   addToDo,
+  addDate,
   deleteToDo,
 } from '../modules';
 
-interface ReduxProps {
+export interface ReduxProps {
   openRedux: boolean;
+  schedulesRedux: Array<string>;
 }
 
-interface DispatchToProps {
-  openModal(): typeof openModal;
-}
+// export interface DispatchToProps {
+//   openModal(): typeof openModal;
+//   closeModal(): typeof closeModal;
+//   addToDo(): typeof addToDo;
+// }
 interface State {
-  open: boolean;
-  schedules: Array<string>;
   scheduleInput: string;
   dateInput: string;
   selected: Array<number>;
@@ -52,24 +58,24 @@ interface State {
 //   handleDelete: () => void;
 // }
 
-type Props = ReduxProps & DispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+type Props = ReduxProps & StateProps & DispatchProps;
 class TodolistComponent extends Component<Props, State> {
   state: State = {
-    open: false,
-    schedules: [],
     scheduleInput: '',
     dateInput: format(new Date(), 'yyyy/MM/dd'),
     selected: [],
   };
 
   handleOpen = () => {
-    // this.setState({ open: true });
-    this.props.openModal();
-    console.log(this.props);
+    const { openModal } = this.props;
+    openModal();
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    const { closeModal } = this.props;
+    closeModal();
   };
 
   handleDateChange = (newValue: any) => {
@@ -81,9 +87,12 @@ class TodolistComponent extends Component<Props, State> {
   };
 
   addSchedule = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { schedules, scheduleInput } = this.state;
+    const { scheduleInput, dateInput } = this.state;
+    const { addToDo, addDate } = this.props;
     e.preventDefault();
     addToDo(scheduleInput);
+    addDate(dateInput);
+    this.setState({ scheduleInput: '' });
     // this.setState({
     //   schedules: [...schedules, scheduleInput],
     //   scheduleInput: '',
@@ -94,7 +103,7 @@ class TodolistComponent extends Component<Props, State> {
   handleSelectAllClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       this.setState({
-        selected: [...Array(this.state.schedules.length).keys()],
+        selected: [...Array(this.props.schedulesRedux.length).keys()],
       });
       return;
     }
@@ -121,14 +130,18 @@ class TodolistComponent extends Component<Props, State> {
   };
 
   handleDelete = () => {
-    const { schedules, selected } = this.state;
-    let newSchedules = schedules.filter((e, i) => selected.indexOf(i) === -1);
-    this.setState({ schedules: newSchedules });
+    const { selected } = this.state;
+    const { schedulesRedux, deleteToDo } = this.props;
+    let newSchedules = schedulesRedux.filter(
+      (e, i) => selected.indexOf(i) === -1
+    );
+    deleteToDo(newSchedules);
+    // this.setState({ schedules: newSchedules });
     this.setState({ selected: [] });
   };
   render() {
-    const { open, schedules, scheduleInput, dateInput, selected } = this.state;
-    const { openRedux } = this.props;
+    const { scheduleInput, dateInput, selected } = this.state;
+    const { openRedux, schedulesRedux, dateInputRedux } = this.props;
     return (
       <main
         style={{
@@ -140,7 +153,7 @@ class TodolistComponent extends Component<Props, State> {
           flexDirection: 'column',
         }}
       >
-        {schedules.length > 0 ? (
+        {schedulesRedux.length > 0 ? (
           <TableContainer>
             <Button
               onClick={this.handleDelete}
@@ -153,11 +166,11 @@ class TodolistComponent extends Component<Props, State> {
             <Table>
               <TodoTableHead
                 handleSelectAllClick={this.handleSelectAllClick}
-                schedules={schedules}
+                schedules={schedulesRedux}
                 selected={selected}
               />
               <TableBody>
-                {schedules.map((scheduleInput, idx) => (
+                {schedulesRedux.map((scheduleInput, idx) => (
                   <TableRow key={idx}>
                     <TableCell>
                       <Checkbox
@@ -166,7 +179,7 @@ class TodolistComponent extends Component<Props, State> {
                       />
                     </TableCell>
                     <TableCell>{scheduleInput}</TableCell>
-                    <TableCell align="center">{dateInput}</TableCell>
+                    <TableCell align="center">{dateInputRedux}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -186,7 +199,6 @@ class TodolistComponent extends Component<Props, State> {
             handleDateChange={this.handleDateChange}
             handleScheduleChange={this.handleScheduleChange}
             addSchedule={this.addSchedule}
-            schedules={schedules}
             scheduleInput={scheduleInput}
             dateInput={dateInput}
           />
@@ -204,20 +216,21 @@ class TodolistComponent extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: RootState): ReduxProps => {
+const mapStateToProps = (state: RootState) => {
   return {
     openRedux: selectOpenModal(state),
+    schedulesRedux: selectSchedules(state),
+    dateInputRedux: selectDateInput(state),
   };
 };
 
-const mapDispatchToProps: MapDispatchToProps<
-  DispatchToProps,
-  {}
-> = dispatch => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     openModal: () => dispatch(openModal()),
-    // addToDo: (scheduleInput: string) => dispatch(addToDo(scheduleInput)),
-    // deleteToDo: () => dispatch(deleteToDo(ownProps.id)),
+    closeModal: () => dispatch(closeModal()),
+    addToDo: (text: string) => dispatch(addToDo(text)),
+    addDate: (date: any) => dispatch(addDate(date)),
+    deleteToDo: (newSchedules: any) => dispatch(deleteToDo(newSchedules)),
   };
 };
 

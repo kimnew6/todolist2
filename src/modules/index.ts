@@ -6,6 +6,8 @@ export * from './todo';
 export interface RootState {
   todoReducer: {
     openRedux: boolean;
+    schedulesRedux: Array<string>;
+    dateInputRedux: string;
   };
 }
 
