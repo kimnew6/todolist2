@@ -149,7 +149,7 @@ class TodolistComponent extends Component<Props, State> {
                 selected={selected}
               />
               <TableBody>
-                {schedulesRedux.map((scheduleInput, idx) => (
+                {schedulesRedux.map((schedule, idx) => (
                   <TableRow key={idx}>
                     <TableCell>
                       <Checkbox
@@ -157,7 +157,7 @@ class TodolistComponent extends Component<Props, State> {
                         onChange={e => this.handleClick(e, idx)}
                       />
                     </TableCell>
-                    <TableCell>{scheduleInput}</TableCell>
+                    <TableCell>{schedule}</TableCell>
                     <TableCell align="center">{dateInputRedux}</TableCell>
                   </TableRow>
                 ))}
