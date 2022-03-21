@@ -1,4 +1,4 @@
-import React, { Component, MouseEventHandler } from 'react';
+import React, { Component } from 'react';
 
 interface State {
   idInput: string;
@@ -20,7 +20,6 @@ class Login extends Component {
   submitUserInfo = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { idInput, pwInput } = this.state;
     e.preventDefault();
-
     fetch(`http://localhost:10001/api/login/users`, {
       method: 'POST',
       body: JSON.stringify({
@@ -30,7 +29,7 @@ class Login extends Component {
     })
       .then(response => response.json())
       .then(response => {
-        if (response.success) {
+        if (response.success === true) {
           localStorage.setItem('token', response.result.token);
           return console.log(response);
           // } else alert('아이디와 비밀번호를 다시 확인하세요');
