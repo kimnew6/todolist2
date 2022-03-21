@@ -81,9 +81,10 @@ class TodolistComponent extends Component<Props, State> {
   };
 
   handleSelectAllClick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { schedulesRedux } = this.props;
     if (e.target.checked) {
       this.setState({
-        selected: [...Array(this.props.schedulesRedux.length).keys()],
+        selected: [...Array(schedulesRedux.length).keys()],
       });
       return;
     }
