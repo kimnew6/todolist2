@@ -8,10 +8,10 @@ export function* loginSaga(action: LoginRequest) {
   try {
     const response = fetch(API, {
       method: 'POST',
-      body: JSON.stringify({
-        email: action.payload.email,
-        password: action.payload.password,
-      }),
+      // body: JSON.stringify({
+      //   email: ,
+      //   password: ,
+      // // }),
     });
     const responseBody = JSON.stringify({ response });
 

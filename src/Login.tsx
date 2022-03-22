@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from './components/withRouter';
-import { loginRequest, LoginRequest } from './modules/todo/actions';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { RootState } from './modules';
+import { RootState, loginRequest, LoginRequest } from './modules';
 interface State {
   idInput: string;
   pwInput: string;
@@ -30,8 +29,9 @@ class Login extends Component<Props> {
   submitUserInfo = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { idInput, pwInput } = this.state;
     // const { navigate } = this.props;
+    const { loginRequest } = this.props;
     e.preventDefault();
-    this.props.loginRequest({ idInput, pwInput });
+    loginRequest(idInput, pwInput);
     // fetch(`http://localhost:9001/api/login/users`, {
     //   method: 'POST',
     //   body: JSON.stringify({
@@ -93,7 +93,8 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    loginRequest: (payload: any) => dispatch(loginRequest(payload)),
+    loginRequest: (email: string, password: string) =>
+      dispatch(loginRequest(email, password)),
   };
 };
 

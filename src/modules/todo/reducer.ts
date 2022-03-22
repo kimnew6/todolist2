@@ -37,6 +37,7 @@ export const todoReducer = (
     date: string;
     newSchedules: string;
     error: string;
+    email: string;
   }
 ) => {
   switch (action.type) {
@@ -54,12 +55,13 @@ export const todoReducer = (
     case DELETE_TODO:
       return { ...state, schedulesRedux: action.newSchedules };
     case LOGIN_REQUEST:
-      console.log('reducer / 로그인 요청');
+      console.log(state);
       return {
         ...state,
         loginLoading: true,
         loginSucceed: false,
         loginFailed: null,
+        email: action.email,
       };
     case LOGIN_SUCCEED:
       console.log('reducer / 로그인 성공');

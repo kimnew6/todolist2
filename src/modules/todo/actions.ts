@@ -11,10 +11,8 @@ import {
 
 export interface LoginRequest {
   type: typeof LOGIN_REQUEST;
-  payload: {
-    email: string;
-    password: string;
-  };
+  email: string;
+  password: string;
 }
 
 export interface LoginSucceed {
@@ -37,11 +35,10 @@ export const deleteToDo = (newSchedules: string) => ({
   newSchedules,
 });
 
-export const loginRequest = (
-  payload: LoginRequest['payload']
-): LoginRequest => ({
+export const loginRequest = (email: string, password: string) => ({
   type: LOGIN_REQUEST,
-  payload,
+  email,
+  password,
 });
 
 export const loginSucceed = (): LoginSucceed => ({
