@@ -3,14 +3,21 @@ import { LoginRequest } from '..';
 import { loginRequest, loginFailed, loginSucceed } from '../actions';
 import { LOGIN_FAILED, LOGIN_SUCCEED } from '../constants';
 
-const loginAPI = `http://localhost:9001/api/login/users`;
-
+const API: string = `http://localhost:9001/api/login/users`;
 export function* loginSaga(action: LoginRequest) {
   try {
-    const res = yield call(loginAPI, action.data);
+    const response = fetch(API, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: action.payload.email,
+        password: action.payload.password,
+      }),
+    });
+    const responseBody = JSON.stringify({ response });
+
+    console.log(responseBody);
     yield put({
       type: LOGIN_SUCCEED,
-      data: res.data,
     });
   } catch (err: any) {
     yield put({

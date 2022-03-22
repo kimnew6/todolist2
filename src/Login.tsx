@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { withRouter } from './components/withRouter';
-
+import { loginRequest, LoginRequest } from './modules/todo/actions';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { RootState } from './modules';
 interface State {
   idInput: string;
-  pwInput: string | number;
+  pwInput: string;
 }
 
-interface Props {
-  navigate: (e: string) => void;
-}
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+// interface RouterProps {
+//   navigate: (e: string) => void;
+// }
+type Props = StateProps & DispatchProps;
 class Login extends Component<Props> {
   state: State = {
     idInput: '',
@@ -23,23 +29,24 @@ class Login extends Component<Props> {
 
   submitUserInfo = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { idInput, pwInput } = this.state;
-    const { navigate } = this.props;
+    // const { navigate } = this.props;
     e.preventDefault();
-    fetch(`http://localhost:9001/api/login/users`, {
-      method: 'POST',
-      body: JSON.stringify({
-        email: idInput,
-        password: pwInput,
-      }),
-    })
-      .then(response => response.json())
-      .then(response => {
-        if (response.success === true) {
-          localStorage.setItem('token', response.result.token);
-          console.log(localStorage);
-          navigate('/todolist');
-        } else alert('아이디와 비밀번호를 다시 확인하세요');
-      });
+    this.props.loginRequest({ idInput, pwInput });
+    // fetch(`http://localhost:9001/api/login/users`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     email: idInput,
+    //     password: pwInput,
+    //   }),
+    // })
+    // .then(response => response.json())
+    // .then(response => {
+    //   if (response.success === true) {
+    //     localStorage.setItem('token', response.result.token);
+    //     console.log(localStorage);
+    //     navigate('/todolist');
+    //   } else alert('아이디와 비밀번호를 다시 확인하세요');
+    // });
   };
   render() {
     const { idInput, pwInput } = this.state;
@@ -78,4 +85,16 @@ class Login extends Component<Props> {
     );
   }
 }
-export default withRouter(Login);
+// export default withRouter(Login);
+
+const mapStateToProps = (state: RootState) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    loginRequest: (payload: any) => dispatch(loginRequest(payload)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

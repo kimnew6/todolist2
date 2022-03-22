@@ -54,6 +54,7 @@ export const todoReducer = (
     case DELETE_TODO:
       return { ...state, schedulesRedux: action.newSchedules };
     case LOGIN_REQUEST:
+      console.log('reducer / 로그인 요청');
       return {
         ...state,
         loginLoading: true,
@@ -61,15 +62,19 @@ export const todoReducer = (
         loginFailed: null,
       };
     case LOGIN_SUCCEED:
+      console.log('reducer / 로그인 성공');
       return {
         ...state,
         loginLoading: false,
         loginSucceed: true,
+        loginFailed: null,
       };
     case LOGIN_FAILED: {
+      console.log('reducer / 로그인 실패');
       return {
         ...state,
         loginLoading: false,
+        loginSucceed: false,
         loginFailed: action.error,
       };
     }
