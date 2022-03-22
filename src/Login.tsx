@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
+import { withRouter } from './components/withRouter';
 
 interface State {
   idInput: string;
   pwInput: string | number;
 }
-class Login extends Component {
+
+interface Props {
+  navigate: (e: string) => void;
+}
+class Login extends Component<Props> {
   state: State = {
     idInput: '',
     pwInput: '',
   };
-
   updateInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     this.setState({
@@ -19,8 +23,9 @@ class Login extends Component {
 
   submitUserInfo = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { idInput, pwInput } = this.state;
+    const { navigate } = this.props;
     e.preventDefault();
-    fetch(`http://localhost:10001/api/login/users`, {
+    fetch(`http://localhost:9001/api/login/users`, {
       method: 'POST',
       body: JSON.stringify({
         email: idInput,
@@ -31,9 +36,9 @@ class Login extends Component {
       .then(response => {
         if (response.success === true) {
           localStorage.setItem('token', response.result.token);
-          return console.log(response);
-          // } else alert('아이디와 비밀번호를 다시 확인하세요');
-        } else console.log(response);
+          console.log(localStorage);
+          navigate('/todolist');
+        } else alert('아이디와 비밀번호를 다시 확인하세요');
       });
   };
   render() {
@@ -73,4 +78,4 @@ class Login extends Component {
     );
   }
 }
-export default Login;
+export default withRouter(Login);

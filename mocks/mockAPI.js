@@ -3,7 +3,7 @@ const http = require('http');
 const mockserver = require('mockserver');
 
 const argv = require('yargs').argv;
-const portAPI = argv.portAPI || 10001;
+const portAPI = argv.portAPI || 9001;
 const directory = argv.dir || 'mocks';
 
 process.on('SIGINT', () => {

@@ -32,7 +32,7 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "eject": "react-scripts eject",
-    "mockAPI": "node mocks/mockAPI.js add --portAPI=10001"
+    "mockAPI": "node mocks/mockAPI.js add --portAPI=9001"
   },
   "eslintConfig": {
     "extends": [

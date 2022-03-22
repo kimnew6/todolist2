@@ -4,6 +4,9 @@ import {
   ADD_DATE,
   ADD_TODO,
   DELETE_TODO,
+  LOGIN_REQUEST,
+  LOGIN_SUCCEED,
+  LOGIN_FAILED,
 } from './constants';
 import { format } from 'date-fns';
 
@@ -11,12 +14,18 @@ export interface todoState {
   openRedux: boolean;
   schedulesRedux: Array<string>;
   dateInputRedux: string;
+  loginLoading: boolean;
+  loginSucceed: boolean;
+  loginFailed: any;
 }
 
 export const initialState: todoState = {
   openRedux: false,
   schedulesRedux: [],
   dateInputRedux: '',
+  loginLoading: false,
+  loginSucceed: false,
+  loginFailed: null,
 };
 
 export const todoReducer = (
@@ -27,9 +36,9 @@ export const todoReducer = (
     id: number;
     date: string;
     newSchedules: string;
+    error: string;
   }
 ) => {
-  console.log(state);
   switch (action.type) {
     case OPEN_MODAL:
       return { ...state, openRedux: true };
@@ -44,6 +53,26 @@ export const todoReducer = (
       return { ...state, dateInputRedux: action.date };
     case DELETE_TODO:
       return { ...state, schedulesRedux: action.newSchedules };
+    case LOGIN_REQUEST:
+      return {
+        ...state,
+        loginLoading: true,
+        loginSucceed: false,
+        loginFailed: null,
+      };
+    case LOGIN_SUCCEED:
+      return {
+        ...state,
+        loginLoading: false,
+        loginSucceed: true,
+      };
+    case LOGIN_FAILED: {
+      return {
+        ...state,
+        loginLoading: false,
+        loginFailed: action.error,
+      };
+    }
     default:
       return state;
   }
