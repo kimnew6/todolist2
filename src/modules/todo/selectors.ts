@@ -6,3 +6,5 @@ export const selectSchedules = (state: RootState) =>
   state.todoReducer.schedulesRedux;
 export const selectDateInput = (state: RootState) =>
   state.todoReducer.dateInputRedux;
+export const selectLoginSucceed = (state: RootState) =>
+  state.todoReducer.loginSuccess;

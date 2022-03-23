@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
 import { withRouter } from './components/withRouter';
-import { Dispatch } from 'redux';
+import { Dispatch, compose } from 'redux';
 import { connect, MapDispatchToProps } from 'react-redux';
-import { RootState, loginRequest, LoginRequest } from './modules';
+import { Navigate } from 'react-router-dom';
+import {
+  RootState,
+  loginRequest,
+  LoginRequest,
+  selectLoginSucceed,
+} from './modules';
 interface State {
   idInput: string;
   pwInput: string;
+}
+interface ReduxState {
+  loginSuccess: boolean;
 }
 
 interface DispatchProps {
   loginRequest: typeof loginRequest;
 }
-// interface RouterProps {
-//   navigate: (e: string) => void;
-// }
-type Props = DispatchProps;
+interface RouterProps {
+  navigate: (e: string) => void;
+}
+type Props = DispatchProps & ReduxState & RouterProps;
 class Login extends Component<Props> {
   state: State = {
     idInput: '',
@@ -29,11 +38,13 @@ class Login extends Component<Props> {
 
   submitUserInfo = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { idInput, pwInput } = this.state;
-    // const { navigate } = this.props;
-    const { loginRequest } = this.props;
+    const { navigate } = this.props;
+    const { loginRequest, loginSuccess } = this.props;
     const payload = { email: idInput, password: pwInput };
     e.preventDefault();
     loginRequest(payload);
+    console.log(loginSuccess);
+
     // fetch(`http://localhost:9001/api/login/users`, {
     //   method: 'POST',
     //   body: JSON.stringify({
@@ -52,6 +63,10 @@ class Login extends Component<Props> {
   };
   render() {
     const { idInput, pwInput } = this.state;
+    const { loginSuccess, navigate } = this.props;
+    if (loginSuccess) {
+      return <Navigate to="/todolist" replace={true} />;
+    }
     return (
       <section
         style={{
@@ -90,11 +105,14 @@ class Login extends Component<Props> {
 // export default withRouter(Login);
 
 const mapStateToProps = (state: RootState) => {
-  return {};
+  return { loginSuccess: selectLoginSucceed(state) };
 };
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
   loginRequest: payload => dispatch(loginRequest(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Login);

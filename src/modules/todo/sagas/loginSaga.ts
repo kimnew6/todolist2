@@ -1,7 +1,7 @@
-import { withRouter } from '../../../components/withRouter';
 import { call, cancel, put, take, fork } from 'redux-saga/effects';
 import { LoginRequest, setClient, unsetClient } from '..';
 import { loginRequest, loginFailed, loginSucceed } from '../actions';
+import { withRouter } from '../../../components/withRouter';
 import {
   LOGIN_REQUEST,
   LOGIN_FAILED,
@@ -9,7 +9,6 @@ import {
   CLIENT_UNSET,
 } from '../constants';
 import axios from 'axios';
-
 const API: string = `http://localhost:9001/api/login/users`;
 // function loginApi(email: string, password: string) {
 //   // return fetch(API, {
@@ -57,14 +56,20 @@ export function* logout() {
 //   return token;
 // }
 
-function loginApi(payload: { email: string; password: string }) {
+function loginApi(payload: LoginRequest['payload']) {
   return axios.post(API, payload);
 }
 
 export function* loginSaga(action: LoginRequest): any {
-  const result = yield call(loginApi, action.payload);
-  console.log(result);
-  yield put(loginSucceed());
+  try {
+    const result = yield call(loginApi, action.payload);
+    console.log(result);
+    if (result.data.success) {
+      yield put(loginSucceed());
+    } else {
+      yield put(loginFailed({ response: result.data.success }));
+    }
+  } catch (e) {
+    yield put(loginFailed({ response: '' }));
+  }
 }
-
-export default loginSaga;

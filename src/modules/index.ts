@@ -9,6 +9,7 @@ export interface RootState {
     openRedux: boolean;
     schedulesRedux: Array<string>;
     dateInputRedux: string;
+    loginSuccess: boolean;
   };
 }
 

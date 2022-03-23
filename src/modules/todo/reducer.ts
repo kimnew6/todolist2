@@ -17,7 +17,7 @@ export interface todoState {
   schedulesRedux: Array<string>;
   dateInputRedux: string;
   loginLoading: boolean;
-  loginSucceed: boolean;
+  loginSuccess: boolean;
   error: any;
 }
 
@@ -26,7 +26,7 @@ export const initialState: todoState = {
   schedulesRedux: [],
   dateInputRedux: '',
   loginLoading: false,
-  loginSucceed: false,
+  loginSuccess: false,
   error: null,
 };
 
@@ -62,7 +62,7 @@ export const todoReducer = (
       return {
         ...state,
         loginLoading: true,
-        loginSucceed: false,
+        loginSuccess: false,
         error: null,
         email: action.email,
       };
@@ -71,7 +71,7 @@ export const todoReducer = (
       return {
         ...state,
         loginLoading: false,
-        loginSucceed: true,
+        loginSuccess: true,
         error: null,
       };
     case LOGIN_FAILED: {
@@ -79,7 +79,7 @@ export const todoReducer = (
       return {
         ...state,
         loginLoading: false,
-        loginSucceed: false,
+        loginSuccess: false,
         error: action.error,
       };
     }
