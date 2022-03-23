@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { withRouter } from './components/withRouter';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { RootState, loginRequest, LoginRequest } from './modules';
 interface State {
   idInput: string;
   pwInput: string;
 }
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+interface DispatchProps {
+  loginRequest: typeof loginRequest;
+}
 // interface RouterProps {
 //   navigate: (e: string) => void;
 // }
-type Props = StateProps & DispatchProps;
+type Props = DispatchProps;
 class Login extends Component<Props> {
   state: State = {
     idInput: '',
@@ -30,8 +31,9 @@ class Login extends Component<Props> {
     const { idInput, pwInput } = this.state;
     // const { navigate } = this.props;
     const { loginRequest } = this.props;
+    const payload = { email: idInput, password: pwInput };
     e.preventDefault();
-    loginRequest(idInput, pwInput);
+    loginRequest(payload);
     // fetch(`http://localhost:9001/api/login/users`, {
     //   method: 'POST',
     //   body: JSON.stringify({
@@ -91,11 +93,8 @@ const mapStateToProps = (state: RootState) => {
   return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    loginRequest: (email: string, password: string) =>
-      dispatch(loginRequest(email, password)),
-  };
-};
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
+  loginRequest: payload => dispatch(loginRequest(payload)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

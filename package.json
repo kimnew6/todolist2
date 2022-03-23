@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.21",
+    "axios": "^0.26.1",
     "date-fns": "^2.28.0",
     "mockserver": "^3.1.1",
     "react": "^17.0.2",

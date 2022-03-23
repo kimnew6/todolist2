@@ -7,3 +7,5 @@ export const DELETE_TODO = 'DELETE_TODO';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCEED = 'LOGIN_SUCCEED';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const CLIENT_SET = 'CLIENT_SET';
+export const CLIENT_UNSET = 'CLIENT_UNSET';

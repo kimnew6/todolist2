@@ -7,6 +7,8 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCEED,
   LOGIN_FAILED,
+  CLIENT_SET,
+  CLIENT_UNSET,
 } from './constants';
 import { format } from 'date-fns';
 
@@ -16,7 +18,7 @@ export interface todoState {
   dateInputRedux: string;
   loginLoading: boolean;
   loginSucceed: boolean;
-  loginFailed: any;
+  error: any;
 }
 
 export const initialState: todoState = {
@@ -25,7 +27,7 @@ export const initialState: todoState = {
   dateInputRedux: '',
   loginLoading: false,
   loginSucceed: false,
-  loginFailed: null,
+  error: null,
 };
 
 export const todoReducer = (
@@ -38,6 +40,7 @@ export const todoReducer = (
     newSchedules: string;
     error: string;
     email: string;
+    token: any;
   }
 ) => {
   switch (action.type) {
@@ -55,12 +58,12 @@ export const todoReducer = (
     case DELETE_TODO:
       return { ...state, schedulesRedux: action.newSchedules };
     case LOGIN_REQUEST:
-      console.log(state);
+      console.log('reducer / 로그인 요청');
       return {
         ...state,
         loginLoading: true,
         loginSucceed: false,
-        loginFailed: null,
+        error: null,
         email: action.email,
       };
     case LOGIN_SUCCEED:
@@ -69,7 +72,7 @@ export const todoReducer = (
         ...state,
         loginLoading: false,
         loginSucceed: true,
-        loginFailed: null,
+        error: null,
       };
     case LOGIN_FAILED: {
       console.log('reducer / 로그인 실패');
@@ -77,9 +80,20 @@ export const todoReducer = (
         ...state,
         loginLoading: false,
         loginSucceed: false,
-        loginFailed: action.error,
+        error: action.error,
       };
     }
+    case CLIENT_SET:
+      return {
+        id: action.token.userId,
+        token: action.token,
+      };
+
+    case CLIENT_UNSET:
+      return {
+        id: null,
+        token: null,
+      };
     default:
       return state;
   }

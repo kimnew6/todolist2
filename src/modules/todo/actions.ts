@@ -7,12 +7,16 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCEED,
   LOGIN_FAILED,
+  CLIENT_SET,
+  CLIENT_UNSET,
 } from './constants';
 
 export interface LoginRequest {
   type: typeof LOGIN_REQUEST;
-  email: string;
-  password: string;
+  payload: {
+    email: string;
+    password: string;
+  };
 }
 
 export interface LoginSucceed {
@@ -35,10 +39,9 @@ export const deleteToDo = (newSchedules: string) => ({
   newSchedules,
 });
 
-export const loginRequest = (email: string, password: string) => ({
+export const loginRequest = (payload: LoginRequest['payload']) => ({
   type: LOGIN_REQUEST,
-  email,
-  password,
+  payload,
 });
 
 export const loginSucceed = (): LoginSucceed => ({
@@ -49,3 +52,15 @@ export const loginFailed = (payload: LoginFailed['payload']): LoginFailed => ({
   type: LOGIN_FAILED,
   payload,
 });
+export function setClient(token: any) {
+  return {
+    type: CLIENT_SET,
+    token,
+  };
+}
+
+export function unsetClient() {
+  return {
+    type: CLIENT_UNSET,
+  };
+}
