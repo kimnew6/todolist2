@@ -29,11 +29,13 @@ import {
   addToDo,
   addDate,
   deleteToDo,
+  selectLoginSucceed,
 } from '../modules';
 
 export interface ReduxProps {
   openRedux: boolean;
   schedulesRedux: Array<string>;
+  loginSuccess: boolean;
 }
 
 interface State {
@@ -191,6 +193,12 @@ class TodolistComponent extends Component<Props, State> {
         >
           <AddIcon />
         </Fab>
+        <Button
+          style={{ position: 'fixed', top: 70, right: 10 }}
+          variant="contained"
+        >
+          로그아웃
+        </Button>
       </main>
     );
   }
@@ -201,6 +209,7 @@ const mapStateToProps = (state: RootState) => {
     openRedux: selectOpenModal(state),
     schedulesRedux: selectSchedules(state),
     dateInputRedux: selectDateInput(state),
+    loginSuccess: selectLoginSucceed(state),
   };
 };
 
