@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Navigate } from 'react-router-dom';
+
 import Regbutton from './Regbutton';
 import Reglist from './Reglist';
 import TodoTableHead from './TodoTableHead';
@@ -7,15 +9,13 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import { format } from 'date-fns';
-
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
+import { format } from 'date-fns';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -30,6 +30,7 @@ import {
   addDate,
   deleteToDo,
   selectLoginSucceed,
+  logoutRequest,
 } from '../modules';
 
 export interface ReduxProps {
@@ -62,6 +63,11 @@ class TodolistComponent extends Component<Props, State> {
   handleClose = () => {
     const { closeModal } = this.props;
     closeModal();
+  };
+
+  handleLogout = () => {
+    const { logoutRequest } = this.props;
+    logoutRequest();
   };
 
   handleDateChange = (newValue: any) => {
@@ -123,7 +129,11 @@ class TodolistComponent extends Component<Props, State> {
   };
   render() {
     const { scheduleInput, dateInput, selected } = this.state;
-    const { openRedux, schedulesRedux, dateInputRedux } = this.props;
+    const { openRedux, schedulesRedux, dateInputRedux, loginSuccess } =
+      this.props;
+    if (loginSuccess === false) {
+      return <Navigate to="/" replace={true} />;
+    }
     return (
       <main
         style={{
@@ -194,6 +204,7 @@ class TodolistComponent extends Component<Props, State> {
           <AddIcon />
         </Fab>
         <Button
+          onClick={this.handleLogout}
           style={{ position: 'fixed', top: 70, right: 10 }}
           variant="contained"
         >
@@ -220,6 +231,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     addToDo: (text: string) => dispatch(addToDo(text)),
     addDate: (date: any) => dispatch(addDate(date)),
     deleteToDo: (newSchedules: any) => dispatch(deleteToDo(newSchedules)),
+    logoutRequest: () => dispatch(logoutRequest()),
   };
 };
 

@@ -20,10 +20,7 @@ interface ReduxState {
 interface DispatchProps {
   loginRequest: typeof loginRequest;
 }
-interface RouterProps {
-  navigate: (e: string) => void;
-}
-type Props = DispatchProps & ReduxState & RouterProps;
+type Props = DispatchProps & ReduxState;
 class Login extends Component<Props> {
   state: State = {
     idInput: '',
@@ -38,32 +35,14 @@ class Login extends Component<Props> {
 
   submitUserInfo = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { idInput, pwInput } = this.state;
-    const { navigate } = this.props;
-    const { loginRequest, loginSuccess } = this.props;
+    const { loginRequest } = this.props;
     const payload = { email: idInput, password: pwInput };
     e.preventDefault();
     loginRequest(payload);
-    console.log(loginSuccess);
-
-    // fetch(`http://localhost:9001/api/login/users`, {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     email: idInput,
-    //     password: pwInput,
-    //   }),
-    // })
-    // .then(response => response.json())
-    // .then(response => {
-    //   if (response.success === true) {
-    //     localStorage.setItem('token', response.result.token);
-    //     console.log(localStorage);
-    //     navigate('/todolist');
-    //   } else alert('아이디와 비밀번호를 다시 확인하세요');
-    // });
   };
   render() {
     const { idInput, pwInput } = this.state;
-    const { loginSuccess, navigate } = this.props;
+    const { loginSuccess } = this.props;
     if (loginSuccess) {
       return <Navigate to="/todolist" replace={true} />;
     }
@@ -112,7 +91,4 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
   loginRequest: payload => dispatch(loginRequest(payload)),
 });
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

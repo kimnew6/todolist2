@@ -7,6 +7,7 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCEED,
   LOGIN_FAILED,
+  LOGOUT_REQUEST,
   CLIENT_SET,
   CLIENT_UNSET,
 } from './constants';
@@ -22,6 +23,10 @@ export interface LoginRequest {
 export interface LoginSucceed {
   type: typeof LOGIN_SUCCEED;
 }
+export interface LogoutRequest {
+  type: typeof LOGOUT_REQUEST;
+}
+
 export interface LoginFailed {
   type: typeof LOGIN_FAILED;
   payload: { response: any };
@@ -52,6 +57,11 @@ export const loginFailed = (payload: LoginFailed['payload']): LoginFailed => ({
   type: LOGIN_FAILED,
   payload,
 });
+
+export const logoutRequest = (): LogoutRequest => ({
+  type: LOGOUT_REQUEST,
+});
+
 export function setClient(token: any) {
   return {
     type: CLIENT_SET,
