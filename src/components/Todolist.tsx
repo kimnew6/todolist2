@@ -17,7 +17,7 @@ import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 import { format } from 'date-fns';
 
-import { connect } from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import {
   RootState,
@@ -33,21 +33,24 @@ import {
   logoutRequest,
 } from '../modules';
 
-export interface ReduxProps {
-  openRedux: boolean;
-  schedulesRedux: Array<string>;
-  loginSuccess: boolean;
-}
-
 interface State {
   scheduleInput: string;
   dateInput: string;
   selected: Array<number>;
 }
-
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = ReturnType<typeof mapDispatchToProps>;
-type Props = ReduxProps & StateProps & DispatchProps;
+export interface ReduxProps {
+  openRedux: boolean;
+  schedulesRedux: Array<any>;
+  loginSuccess: boolean;
+}
+interface DispatchProps {
+  addToDo: typeof addToDo;
+  deleteToDo: typeof deleteToDo;
+  openModal: typeof openModal;
+  closeModal: typeof closeModal;
+  logoutRequest: typeof logoutRequest;
+}
+type Props = ReduxProps & DispatchProps;
 class TodolistComponent extends Component<Props, State> {
   state: State = {
     scheduleInput: '',
@@ -80,10 +83,12 @@ class TodolistComponent extends Component<Props, State> {
 
   addSchedule = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { scheduleInput, dateInput } = this.state;
-    const { addToDo, addDate } = this.props;
+    const { addToDo } = this.props;
+
+    const payload = { text: scheduleInput, date: dateInput };
     e.preventDefault();
-    addToDo(scheduleInput);
-    addDate(dateInput);
+    addToDo(payload);
+    console.log(scheduleInput, dateInput);
     this.setState({ scheduleInput: '' });
     this.handleClose();
   };
@@ -129,8 +134,7 @@ class TodolistComponent extends Component<Props, State> {
   };
   render() {
     const { scheduleInput, dateInput, selected } = this.state;
-    const { openRedux, schedulesRedux, dateInputRedux, loginSuccess } =
-      this.props;
+    const { openRedux, schedulesRedux, loginSuccess } = this.props;
     if (loginSuccess === false) {
       return <Navigate to="/" replace={true} />;
     }
@@ -170,8 +174,8 @@ class TodolistComponent extends Component<Props, State> {
                         onChange={e => this.handleClick(e, idx)}
                       />
                     </TableCell>
-                    <TableCell>{schedule}</TableCell>
-                    <TableCell align="center">{dateInputRedux}</TableCell>
+                    <TableCell>{schedule.text}</TableCell>
+                    <TableCell align="center">{schedule.date}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -224,16 +228,14 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    openModal: () => dispatch(openModal()),
-    closeModal: () => dispatch(closeModal()),
-    addToDo: (text: string) => dispatch(addToDo(text)),
-    addDate: (date: any) => dispatch(addDate(date)),
-    deleteToDo: (newSchedules: any) => dispatch(deleteToDo(newSchedules)),
-    logoutRequest: () => dispatch(logoutRequest()),
-  };
-};
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
+  openModal: () => dispatch(openModal()),
+  closeModal: () => dispatch(closeModal()),
+  addToDo: payload => dispatch(addToDo(payload)),
+  addDate: (date: any) => dispatch(addDate(date)),
+  deleteToDo: newSchedules => dispatch(deleteToDo(newSchedules)),
+  logoutRequest: () => dispatch(logoutRequest()),
+});
 
 export const Todolist = connect(
   mapStateToProps,

@@ -15,7 +15,7 @@ import { format } from 'date-fns';
 
 export interface todoState {
   openRedux: boolean;
-  schedulesRedux: Array<string>;
+  schedulesRedux: Array<any>;
   dateInputRedux: string;
   loginLoading: boolean;
   loginSuccess: boolean;
@@ -34,11 +34,12 @@ export const initialState: todoState = {
 export const todoReducer = (
   state = initialState,
   action: {
+    payload: any;
     type: any;
     text: string;
     id: number;
     date: string;
-    newSchedules: string;
+    newSchedules: any;
     error: string;
     email: string;
     token: any;
@@ -50,9 +51,13 @@ export const todoReducer = (
     case CLOSE_MODAL:
       return { ...state, openRedux: false };
     case ADD_TODO:
+      console.log(state);
       return {
         ...state,
-        schedulesRedux: [...state.schedulesRedux, action.text],
+        schedulesRedux: [
+          ...state.schedulesRedux,
+          { text: action.payload.text, date: action.payload.date },
+        ],
       };
     case ADD_DATE:
       return { ...state, dateInputRedux: action.date };
@@ -65,7 +70,6 @@ export const todoReducer = (
         loginLoading: true,
         loginSuccess: false,
         error: null,
-        email: action.email,
       };
     case LOGIN_SUCCEED:
       console.log('reducer / 로그인 성공');

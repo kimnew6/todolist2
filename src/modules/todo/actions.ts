@@ -19,7 +19,13 @@ export interface LoginRequest {
     password: string;
   };
 }
-
+export interface AddToDo {
+  type: typeof ADD_TODO;
+  payload: {
+    text: string;
+    date: string;
+  };
+}
 export interface LoginSucceed {
   type: typeof LOGIN_SUCCEED;
 }
@@ -34,12 +40,12 @@ export interface LoginFailed {
 
 export const openModal = () => ({ type: OPEN_MODAL });
 export const closeModal = () => ({ type: CLOSE_MODAL });
-export const addToDo = (text: string) => ({
+export const addToDo = (payload: AddToDo['payload']) => ({
   type: ADD_TODO,
-  text,
+  payload,
 });
 export const addDate = (date: string) => ({ type: ADD_DATE, date });
-export const deleteToDo = (newSchedules: string) => ({
+export const deleteToDo = (newSchedules: any) => ({
   type: DELETE_TODO,
   newSchedules,
 });

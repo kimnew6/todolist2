@@ -41,7 +41,6 @@ class Login extends Component<Props> {
     loginRequest(payload);
   };
   render() {
-    const { idInput, pwInput } = this.state;
     const { loginSuccess } = this.props;
     if (loginSuccess) {
       return <Navigate to="/todolist" replace={true} />;
