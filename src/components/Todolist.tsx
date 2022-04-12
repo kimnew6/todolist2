@@ -18,7 +18,6 @@ import Checkbox from '@mui/material/Checkbox';
 import { format } from 'date-fns';
 
 import { connect, MapDispatchToProps } from 'react-redux';
-import { Dispatch } from 'redux';
 import {
   RootState,
   selectOpenModal,
@@ -88,7 +87,6 @@ class TodolistComponent extends Component<Props, State> {
     const payload = { text: scheduleInput, date: dateInput };
     e.preventDefault();
     addToDo(payload);
-    console.log(scheduleInput, dateInput);
     this.setState({ scheduleInput: '' });
     this.handleClose();
   };

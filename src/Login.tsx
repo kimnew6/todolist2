@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter } from './components/withRouter';
-import { Dispatch, compose } from 'redux';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import {
-  RootState,
-  loginRequest,
-  LoginRequest,
-  selectLoginSucceed,
-} from './modules';
+import { RootState, loginRequest, selectLoginSucceed } from './modules';
 interface State {
   idInput: string;
   pwInput: string;
@@ -80,7 +73,6 @@ class Login extends Component<Props> {
     );
   }
 }
-// export default withRouter(Login);
 
 const mapStateToProps = (state: RootState) => {
   return { loginSuccess: selectLoginSucceed(state) };
